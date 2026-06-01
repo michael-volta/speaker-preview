@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Battery Forum Speaker Profile</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           max-width: 600px; margin: 60px auto; padding: 0 24px; color: #1a1a1a; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    .subtitle { color: #555; margin-bottom: 32px; font-size: 0.95rem; }
+    .profile { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px; }
+    .headshot { width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+                background: #e8e8e8; flex-shrink: 0; }
+    .headshot-placeholder { width: 120px; height: 120px; border-radius: 50%;
+                            background: #e8e8e8; flex-shrink: 0; }
+    .info h2 { margin: 0 0 4px; font-size: 1.25rem; }
+    .info .title { font-size: 1rem; color: #444; margin: 0 0 4px; }
+    .info .company { font-size: 1rem; color: #444; margin: 0 0 8px; }
+    .company-row { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 32px; height: 32px; object-fit: contain; }
+    .linkedin { font-size: 0.85rem; color: #0077b5; text-decoration: none; }
+    .linkedin:hover { text-decoration: underline; }
+    .note { background: #f0f7f0; border-left: 4px solid #4caf50;
+            padding: 14px 18px; border-radius: 4px; margin-bottom: 24px;
+            font-size: 0.95rem; }
+    .btn { display: inline-block; background: #e8f0fe; color: #1a55a0;
+           border: 1px solid #c0d0f0; padding: 12px 22px; border-radius: 6px;
+           font-size: 0.95rem; text-decoration: none; cursor: pointer; }
+    .btn:hover { background: #d0e0ff; }
+    #missing-data { background: #fff3e0; border-left: 4px solid #ff9800;
+                    padding: 14px 18px; border-radius: 4px; margin-bottom: 24px;
+                    font-size: 0.95rem; display: none; }
+  </style>
+</head>
+<body>
+  <h1>Your Battery Forum Speaker Profile</h1>
+  <p class="subtitle">Here's what we've pulled from LinkedIn. Review it below.</p>
+
+  <div id="missing-data">
+    Some fields are missing — please use the correction form to add them.
+  </div>
+
+  <div class="profile">
+    <img id="headshot" class="headshot" alt="Speaker headshot" style="display:none">
+    <div id="headshot-placeholder" class="headshot-placeholder"></div>
+    <div class="info">
+      <h2 id="name"></h2>
+      <p class="title" id="title"></p>
+      <div class="company-row">
+        <img id="logo" class="logo" alt="Company logo" style="display:none">
+        <p class="company" style="margin:0" id="company"></p>
+      </div>
+      <a id="linkedin" class="linkedin" target="_blank" rel="noopener" style="display:none">
+        View LinkedIn profile
+      </a>
+    </div>
+  </div>
+
+  <div class="note">
+    If everything looks right, no action is needed. We'll finalize your profile in 3 working days.
+  </div>
+
+  <a id="correction-btn" class="btn" target="_blank" rel="noopener">
+    Something's wrong — make a correction
+  </a>
+
+  <script>
+    const p = new URLSearchParams(window.location.search);
+    const set = (id, val) => { if (val) document.getElementById(id).textContent = val; };
+
+    set("name", p.get("name"));
+    set("title", p.get("title"));
+    set("company", p.get("company"));
+
+    const headshot = p.get("headshot");
+    if (headshot) {
+      const img = document.getElementById("headshot");
+      img.src = headshot;
+      img.style.display = "block";
+      document.getElementById("headshot-placeholder").style.display = "none";
+    }
+
+    const logo = p.get("logo");
+    if (logo) {
+      const img = document.getElementById("logo");
+      img.src = logo;
+      img.style.display = "block";
+      img.onerror = () => { img.style.display = "none"; };
+    }
+
+    const linkedin = p.get("linkedin");
+    if (linkedin) {
+      const a = document.getElementById("linkedin");
+      a.href = linkedin;
+      a.style.display = "inline";
+    }
+
+    const formUrl = p.get("form_url");
+    if (formUrl) {
+      document.getElementById("correction-btn").href = formUrl;
+    }
+
+    // Show warning if key fields are missing
+    if (!p.get("name") && !p.get("title") && !p.get("company")) {
+      document.getElementById("missing-data").style.display = "block";
+    }
+  </script>
+</body>
+</html>
