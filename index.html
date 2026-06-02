@@ -49,7 +49,8 @@
       <p class="title" id="title"></p>
       <div class="company-row">
         <img id="logo" class="logo" alt="Company logo" style="display:none">
-        <p class="company" style="margin:0" id="company"></p>
+        <a id="company-link" class="company" style="margin:0;text-decoration:none;color:#444" target="_blank" rel="noopener"></a>
+        <p id="company-plain" class="company" style="margin:0;display:none"></p>
       </div>
       <a id="linkedin" class="linkedin" target="_blank" rel="noopener" style="display:none">
         View LinkedIn profile
@@ -71,7 +72,21 @@
 
     set("name", p.get("name"));
     set("title", p.get("title"));
-    set("company", p.get("company"));
+
+    const company = p.get("company");
+    const companyLinkedin = p.get("company_linkedin");
+    if (company) {
+      if (companyLinkedin) {
+        const a = document.getElementById("company-link");
+        a.textContent = company;
+        a.href = companyLinkedin;
+        a.style.display = "inline";
+      } else {
+        const plain = document.getElementById("company-plain");
+        plain.textContent = company;
+        plain.style.display = "block";
+      }
+    }
 
     const headshot = p.get("headshot");
     if (headshot) {
